@@ -1,50 +1,50 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
+import { Mode, Task } from "../types/taskTypes";
 
-export interface Task {
-  init: string;
-  edited?: string;
-  startDate: string;
-  deadline: string;
-  taskName: string;
-  description: string;
-  status: "active" | "backlog" | "completed";
-}
+const localTasks =
+  typeof localStorage !== "undefined"
+    ? localStorage.getItem("todoData")
+    : undefined;
+const localMode =
+  typeof localStorage !== "undefined"
+    ? localStorage.getItem("todoMode")
+    : undefined;
 
-export interface TasksQueue {
-  completed: Task[];
-  active: Task[];
-  backlog: Task[];
-}
-
-const initialState: TasksQueue = {
-  completed: [],
-  active: [],
-  backlog: [],
+export const initialState: {
+  tasks: Task[];
+  mode: Mode;
+} = {
+  tasks: localTasks ? (JSON.parse(localTasks) as Task[]) : [],
+  mode: (localMode as Mode) ?? "all",
 };
 
 export const todoSlice = createSlice({
   name: "todoParams",
   initialState,
   reducers: {
-    setActive: (state, action: PayloadAction<Task>) => {
-      state.active.push(action.payload);
+    setMode: (state, action: PayloadAction<Mode>) => {
+      state.mode = action.payload;
+      localStorage.setItem("todoMode", state.mode);
     },
-    setCompleted: (state, action: PayloadAction<Task>) => {
-      state.completed.push(action.payload);
+    setTask: (state, action: PayloadAction<Task>) => {
+      state.tasks.push(action.payload);
+      localStorage.setItem("todoData", JSON.stringify(state.tasks));
     },
-    setBacklog: (state, action: PayloadAction<Task>) => {
-      state.backlog.push(action.payload);
+    removeTask: (state, action: PayloadAction<Task>) => {
+      state.tasks = state.tasks.filter(
+        (task) => task.init !== action.payload.init,
+      );
+      localStorage.setItem("todoData", JSON.stringify(state.tasks));
     },
   },
 });
 
-export const { setActive, setCompleted, setBacklog } = todoSlice.actions;
+export const { setMode, setTask, removeTask } = todoSlice.actions;
 
-export const selectActive = (state: RootState) => state.todoSlice.active;
-export const selectCompleted = (state: RootState) => state.todoSlice.completed;
-export const selectBacklog = (state: RootState) => state.todoSlice.backlog;
+export const selectTasks = (state: RootState) => state.todoSlice.tasks;
+export const selectMode = (state: RootState) => state.todoSlice.mode;
 
 const todoReducer = todoSlice.reducer;
 export default todoReducer;

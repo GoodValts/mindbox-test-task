@@ -1,3 +1,10 @@
+$colorBlack: #1d1d1b;
+$colorWhite: #f2f6f6;
+$colorGray: #a4adac;
+$colorOrange: #ff5900;
+$colorOrangeDark: #e0570e;
+$colorRed: #ff4026;
+
 @mixin _hover {
   @media (hover: hover) {
     &:hover {
