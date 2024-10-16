@@ -13,10 +13,10 @@ export default function Form() {
 
   const [taskName, setTaskName] = useState("");
   const [date, setDate] = useState(
-    `${formateToInputValue(currentDate.getFullYear(), 4)}-${formateToInputValue(currentDate.getMonth() + 1, 2)}-${formateToInputValue(currentDate.getDate() + 1, 2)}`,
+    `${formateToInputValue(currentDate.getFullYear(), 4)}-${formateToInputValue(currentDate.getMonth() + 1, 2)}-${formateToInputValue(currentDate.getDate() + 1, 2)}`
   );
   const [time, setTime] = useState(
-    `${formateToInputValue(currentDate.getHours(), 2)}:${formateToInputValue(currentDate.getMinutes(), 2)}`,
+    `${formateToInputValue(currentDate.getHours(), 2)}:${formateToInputValue(currentDate.getMinutes(), 2)}`
   );
 
   const createTask = () => {
@@ -30,7 +30,7 @@ export default function Form() {
       parseInt(date.split("-")[1]) - 1,
       parseInt(date.split("-")[2]),
       parseInt(time.split(":")[0]),
-      parseInt(time.split(":")[1]),
+      parseInt(time.split(":")[1])
     );
 
     // console.log("deadline=", date);
@@ -56,10 +56,10 @@ export default function Form() {
 
     setTaskName("");
     setDate(
-      `${formateToInputValue(initDate.getFullYear(), 4)}-${formateToInputValue(initDate.getMonth() + 1, 2)}-${formateToInputValue(initDate.getDate() + 1, 2)}`,
+      `${formateToInputValue(initDate.getFullYear(), 4)}-${formateToInputValue(initDate.getMonth() + 1, 2)}-${formateToInputValue(initDate.getDate() + 1, 2)}`
     );
     setTime(
-      `${formateToInputValue(initDate.getHours(), 2)}:${formateToInputValue(initDate.getMinutes(), 2)}`,
+      `${formateToInputValue(initDate.getHours(), 2)}:${formateToInputValue(initDate.getMinutes(), 2)}`
     );
   };
 
@@ -87,6 +87,7 @@ export default function Form() {
           type="date"
           required={true}
           value={date}
+          data-testid="dateInput"
         />
         <input
           className={`${styles.input} ${styles.input_date}`}
@@ -94,6 +95,7 @@ export default function Form() {
           type="time"
           required={true}
           value={time}
+          data-testid="timeInput"
         />
       </div>
       <button

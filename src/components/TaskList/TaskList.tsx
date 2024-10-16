@@ -16,11 +16,7 @@ export default function TaskList() {
   const dispatch = useAppDispatch();
   const mode = useAppSelector(selectMode);
   const taskArr = useAppSelector(selectTasks).filter((task) =>
-    mode === "all"
-      ? true
-      : mode === "active"
-        ? !task.completed
-        : task.completed,
+    mode === "all" ? true : mode === "active" ? !task.completed : task.completed
   );
 
   const date = new Date();
@@ -32,7 +28,7 @@ export default function TaskList() {
           ? true
           : mode === "active"
             ? !task.completed
-            : task.completed,
+            : task.completed
       )
       .forEach((task) => dispatch(removeTask(task)));
   };
@@ -59,7 +55,9 @@ export default function TaskList() {
         return (
           <div className={styles.taskBlock} key={task.init}>
             <div className={styles.taskInfo}>
-              <h3 className={styles.taskName}>{task.taskName}</h3>
+              <h3 className={styles.taskName} data-testid="taskName">
+                {task.taskName}
+              </h3>
               <p
                 className={
                   task.completed
@@ -76,12 +74,14 @@ export default function TaskList() {
               <button
                 className={`${styles.button} ${styles.button_delete}`}
                 onClick={() => dispatch(removeTask(task))}
+                data-testid="buttonDelete"
               >
                 Delete
               </button>
               <button
                 className={`${styles.button} ${styles.button_complete}`}
                 onClick={() => completeTask(task)}
+                data-testid="buttonComplete"
               >
                 Complete
               </button>

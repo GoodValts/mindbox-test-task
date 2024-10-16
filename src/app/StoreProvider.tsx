@@ -15,7 +15,7 @@ export default function StoreProvider({
     storeRef.current = makeStore();
   }
 
-  console.log(storeRef.current.getState());
+  // console.log(storeRef.current.getState());
 
   return <Provider store={storeRef.current}>{children}</Provider>;
 }
