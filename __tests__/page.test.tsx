@@ -107,23 +107,22 @@ describe("Redux functionality", () => {
     await userEvent.click(completedButton);
 
     setTimeout(() => {
-      const taskHeader = screen.getByTestId("taskName");
+      const taskHeader = screen.getByTestId("someTask");
       expect(taskHeader).toBeInTheDocument();
     }, 1000);
   });
 
-  // it("set deleted", async () => {
-  //   render(<Home />);
-  //   const input = screen.getByRole("textbox");
-  //   const submitButton = screen.getByRole("button", { name: /add task/i });
+  it("clear list", async () => {
+    render(<Home />);
+    const input = screen.getByRole("textbox");
+    const submitButton = screen.getByRole("button", { name: /add task/i });
 
-  //   await userEvent.type(input, "someTask");
-  //   await userEvent.click(submitButton);
+    await userEvent.type(input, "someTask");
+    await userEvent.click(submitButton);
 
-  //   const deleteButton = screen.getByTestId("buttonDelete");
-  //   await userEvent.click(deleteButton);
+    const deleteButton = screen.getByTestId("buttonDelete");
+    await userEvent.click(deleteButton);
 
-  //   const taskHeader = screen.getByTestId("taskName");
-  //   expect(taskHeader).not.toBeInTheDocument();
-  // });
+    expect(screen.queryAllByTestId("taskName")).toBeNull;
+  });
 });
