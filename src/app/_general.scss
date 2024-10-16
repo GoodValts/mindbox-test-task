@@ -4,8 +4,9 @@ $colorGray: #a4adac;
 $colorOrange: #ff5900;
 $colorOrangeDark: #e0570e;
 $colorRed: #ff4026;
+$colorGreen: #32cd32;
 
-@mixin _hover {
+@mixin onHover {
   @media (hover: hover) {
     &:hover {
       @content;
@@ -13,7 +14,7 @@ $colorRed: #ff4026;
   }
 }
 
-@mixin _mobile {
+@mixin mediaMobile {
   @media (max-width: 767.98px) {
     @content;
   }

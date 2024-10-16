@@ -3,7 +3,7 @@
 import { useAppDispatch } from "@/lib/hooks";
 import styles from "./Form.module.scss";
 import { useState } from "react";
-import { setTask } from "@/lib/features/todoSlice";
+import { addTask } from "@/lib/features/todoSlice";
 import { formateToInputValue } from "@/lib/common/formatDate";
 
 export default function Form() {
@@ -36,7 +36,7 @@ export default function Form() {
     // console.log("deadline=", date);
 
     const taskParams = {
-      taskName: taskName,
+      taskName: taskName[0].toUpperCase() + taskName.slice(1),
       deadline: deadline.toISOString(),
       init: initDate.toISOString(),
       completed: null,
@@ -52,7 +52,15 @@ export default function Form() {
 
     console.log(taskParams);
 
-    dispatch(setTask(taskParams));
+    dispatch(addTask(taskParams));
+
+    setTaskName("");
+    setDate(
+      `${formateToInputValue(initDate.getFullYear(), 4)}-${formateToInputValue(initDate.getMonth() + 1, 2)}-${formateToInputValue(initDate.getDate() + 1, 2)}`,
+    );
+    setTime(
+      `${formateToInputValue(initDate.getHours(), 2)}:${formateToInputValue(initDate.getMinutes(), 2)}`,
+    );
   };
 
   return (
@@ -64,31 +72,37 @@ export default function Form() {
       }}
     >
       <input
-        placeholder="task name"
+        placeholder="Task name"
         onChange={(e) => setTaskName(e.target.value)}
         type="text"
         required={true}
         value={taskName}
+        className={styles.input}
       />
-      <input
-        onChange={(e) => setDate(e.target.value)}
-        type="date"
-        required={true}
-        value={date}
-      />
-      <input
-        onChange={(e) => setTime(e.target.value)}
-        type="time"
-        required={true}
-        value={time}
-      />
+      <div className={styles.deadlineBlock}>
+        <p className={styles.deadline}>Deadline: </p>
+        <input
+          className={`${styles.input} ${styles.input_date}`}
+          onChange={(e) => setDate(e.target.value)}
+          type="date"
+          required={true}
+          value={date}
+        />
+        <input
+          className={`${styles.input} ${styles.input_date}`}
+          onChange={(e) => setTime(e.target.value)}
+          type="time"
+          required={true}
+          value={time}
+        />
+      </div>
       <button
         className={
           taskName ? `${styles.button} ${styles.button_active}` : styles.button
         }
         type="submit"
       >
-        Submit
+        Add task
       </button>
     </form>
   );

@@ -1,1 +1,94 @@
 @import "../../app/general";
+
+.form {
+  padding-bottom: 1em;
+
+  @include mediaMobile {
+    padding-bottom: 1em 0.5em;
+  }
+}
+
+.input {
+  display: flex;
+  width: 100%;
+  max-width: calc(480px - 2em);
+  box-sizing: border-box;
+  font-size: 20px;
+  text-align: center;
+  outline: 0;
+  color: $colorBlack;
+  background-color: transparent;
+  border: 1px solid $colorGray;
+  border-radius: 0.5em;
+  padding: 0.5em;
+  margin: 1em auto;
+
+  &:focus {
+    border-color: $colorBlack;
+  }
+
+  &::placeholder {
+    color: $colorGray;
+  }
+
+  @include mediaMobile {
+    font-size: 16px;
+    margin: 0.5em auto;
+  }
+
+  &_date {
+    width: auto;
+    min-width: auto;
+    margin: 0.5em;
+  }
+}
+
+.deadlineBlock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.deadline {
+  font-size: 20px;
+  color: $colorBlack;
+
+  @include mediaMobile {
+    font-size: 16px;
+  }
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 260px;
+  box-sizing: border-box;
+  font-size: 20px;
+  font-weight: 400;
+  border: 0;
+  border-radius: 0.5em;
+  color: $colorWhite;
+  background-color: $colorGray;
+  padding: 0.5em 1em;
+  margin: 0.5em auto;
+
+  @include mediaMobile {
+    font-size: 16px;
+    max-width: 220px;
+  }
+
+  @include onHover {
+    cursor: pointer;
+  }
+
+  &_active {
+    background-color: $colorOrange;
+
+    @include onHover {
+      background-color: $colorOrangeDark;
+    }
+  }
+}

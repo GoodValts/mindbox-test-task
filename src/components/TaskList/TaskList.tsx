@@ -5,11 +5,12 @@ import {
   selectMode,
   selectTasks,
   setMode,
-  setTask,
+  addTask,
 } from "@/lib/features/todoSlice";
 import styles from "./TaskList.module.scss";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { Task } from "@/lib/types/taskTypes";
+import { formateToInputValue } from "@/lib/common/formatDate";
 
 export default function TaskList() {
   const dispatch = useAppDispatch();
@@ -39,57 +40,87 @@ export default function TaskList() {
   const completeTask = (task: Task) => {
     const date = new Date();
     dispatch(removeTask(task));
-    dispatch(setTask({ ...task, completed: date.toUTCString() }));
+    dispatch(addTask({ ...task, completed: date.toUTCString() }));
   };
 
   return (
-    <div className={styles.block}>
-      <button className={styles.clear} onClick={clearList}>
-        Clear list
-      </button>
-      {taskArr.map((task) => (
-        <div className={styles.taskBlock} key={task.init}>
-          <h3>{task.taskName}</h3>
-          <p
-            className={
-              task.completed
-                ? `${styles.deadline} ${styles.deadline_completed}`
-                : date > new Date(task.deadline)
-                  ? `${styles.deadline} ${styles.deadline_missed}`
-                  : styles.deadline
-            }
-          >
-            {task.deadline}
-          </p>
-          <button
-            className={styles.delete}
-            onClick={() => dispatch(removeTask(task))}
-          >
-            Delete
-          </button>
-          <button className={styles.delete} onClick={() => completeTask(task)}>
-            Complete
-          </button>
-        </div>
-      ))}
-      <button
-        className={styles.delete}
-        onClick={() => dispatch(setMode("all"))}
-      >
-        All
-      </button>
-      <button
-        className={styles.delete}
-        onClick={() => dispatch(setMode("active"))}
-      >
-        Active
-      </button>
-      <button
-        className={styles.delete}
-        onClick={() => dispatch(setMode("completed"))}
-      >
-        Completed
-      </button>
+    <div className={styles.section}>
+      <h2 className={styles.queue}>
+        {mode[0].toUpperCase() + mode.slice(1)} tasks
+      </h2>
+      {!!taskArr.length && (
+        <button className={styles.clear} onClick={clearList}>
+          Clear list
+        </button>
+      )}
+      {taskArr.map((task) => {
+        const taskDate = new Date(task.deadline);
+
+        return (
+          <div className={styles.taskBlock} key={task.init}>
+            <div className={styles.taskInfo}>
+              <h3 className={styles.taskName}>{task.taskName}</h3>
+              <p
+                className={
+                  task.completed
+                    ? `${styles.deadline} ${styles.deadline_completed}`
+                    : date > new Date(task.deadline)
+                      ? `${styles.deadline} ${styles.deadline_missed}`
+                      : styles.deadline
+                }
+              >
+                {`${formateToInputValue(taskDate.getHours(), 2)}:${formateToInputValue(taskDate.getMinutes(), 2)} ${formateToInputValue(taskDate.getDate(), 2)}.${formateToInputValue(taskDate.getMonth() + 1, 2)}.${formateToInputValue(taskDate.getFullYear(), 4)}`}
+              </p>
+            </div>
+            <div className={styles.taskButtons}>
+              <button
+                className={`${styles.button} ${styles.button_delete}`}
+                onClick={() => dispatch(removeTask(task))}
+              >
+                Delete
+              </button>
+              <button
+                className={`${styles.button} ${styles.button_complete}`}
+                onClick={() => completeTask(task)}
+              >
+                Complete
+              </button>
+            </div>
+          </div>
+        );
+      })}
+      <div className={styles.listButtons}>
+        <button
+          className={
+            mode === "all"
+              ? `${styles.button} ${styles.button_disabled}`
+              : styles.button
+          }
+          onClick={() => dispatch(setMode("all"))}
+        >
+          All
+        </button>
+        <button
+          className={
+            mode === "active"
+              ? `${styles.button} ${styles.button_disabled}`
+              : styles.button
+          }
+          onClick={() => dispatch(setMode("active"))}
+        >
+          Active
+        </button>
+        <button
+          className={
+            mode === "completed"
+              ? `${styles.button} ${styles.button_disabled}`
+              : styles.button
+          }
+          onClick={() => dispatch(setMode("completed"))}
+        >
+          Completed
+        </button>
+      </div>
     </div>
   );
 }
