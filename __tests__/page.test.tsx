@@ -1,5 +1,5 @@
 import Home from "@/app/page";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 describe("Render", () => {
@@ -123,6 +123,6 @@ describe("Redux functionality", () => {
     const deleteButton = screen.getByTestId("buttonDelete");
     await userEvent.click(deleteButton);
 
-    expect(screen.queryAllByTestId("taskName")).toBeNull;
+    expect(screen.queryAllByTestId("taskName")).toBeNull();
   });
 });
