@@ -5,12 +5,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next build && next start",
     "lint": "next lint",
     "fix": "prettier . --write",
     "test": "jest",
     "test:watch": "jest --watch",
-    "coverage": "npx jest --coverage"
+    "test:coverage": "npx jest --coverage"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.7",
